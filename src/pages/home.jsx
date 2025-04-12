@@ -1,9 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet'; // Added
 
 function Home() {
   return (
     <div className="min-h-screen bg-off-white">
+      {/* SEO */}
+      <Helmet>
+        <title>Angshuk - Custom T-shirts & Jerseys</title>
+        <meta
+          name="description"
+          content="Design custom T-shirts and jerseys with Angshuk. High quality, fast delivery."
+        />
+        <meta name="keywords" content="custom apparel, t-shirts, jerseys, Angshuk" />
+      </Helmet>
+
       {/* Hero Section */}
       <div className="pt-20 pb-16 flex flex-col items-center justify-center bg-gradient-to-b from-light-gray to-off-white">
         <h1 className="text-5xl font-bold text-deep-charcoal mb-4 text-center">
@@ -19,7 +30,7 @@ function Home() {
           Start Ordering
         </Link>
       </div>
-      {/* Testimonials (Placeholder) */}
+      {/* Testimonials */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-3xl font-bold text-deep-charcoal text-center mb-8">
           What Our Customers Say
@@ -42,40 +53,6 @@ function Home() {
           ))}
         </div>
       </div>
-      {/* Footer with Adjusted Width */}
-      <footer className="bg-deep-charcoal py-8">
-        <div className="max-w-md mx-auto px-4">
-          <div className="flex justify-center space-x-6">
-            <a
-              href="https://facebook.com/angshuk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-off-white hover:text-soft-teal transition"
-            >
-              <i className="fab fa-facebook-f text-2xl"></i>
-            </a>
-            <a
-              href="https://instagram.com/angshuk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-off-white hover:text-soft-teal transition"
-            >
-              <i className="fab fa-instagram text-2xl"></i>
-            </a>
-            <a
-              href="https://twitter.com/angshuk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-off-white hover:text-soft-teal transition"
-            >
-              <i className="fab fa-twitter text-2xl"></i>
-            </a>
-          </div>
-          <p className="text-center text-gray-400 mt-4">
-            © 2025 Angshuk. All rights reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

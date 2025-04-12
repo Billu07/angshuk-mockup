@@ -1,6 +1,9 @@
 import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { Helmet } from 'react-helmet';
 
-// Placeholder images for the gallery (replace with your actual images)
+// Restored full galleryItems
 const galleryItems = [
   {
     src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
@@ -37,6 +40,13 @@ const galleryItems = [
 function About() {
   return (
     <div className="min-h-screen bg-off-white pt-20 pb-10">
+      <Helmet>
+        <title>Angshuk - About Us</title>
+        <meta
+          name="description"
+          content="Learn about Angshuk's mission to create high-quality custom apparel."
+        />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold text-deep-charcoal text-center mb-8">
           About Angshuk
@@ -57,7 +67,6 @@ function About() {
             We aim to deliver exceptional apparel with a focus on sustainability, precision, and customer satisfaction.
           </p>
         </section>
-        {/* Add Gallery Section Here */}
         <section className="mb-12">
           <h2 className="text-3xl font-semibold text-deep-charcoal text-center mb-8">
             Legacy of Craft
@@ -68,9 +77,10 @@ function About() {
                 key={index}
                 className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <img
+                <LazyLoadImage
                   src={item.src}
                   alt={item.alt}
+                  effect="blur"
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
