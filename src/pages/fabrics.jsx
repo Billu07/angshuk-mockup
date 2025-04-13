@@ -5,6 +5,11 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Thumbs } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 // Import fabric images
 import boxMesh1 from '/src/assets/Fabrics/box-mesh/image1.jpg';
@@ -127,23 +132,30 @@ function Fabrics() {
                 {fabric.name}
               </h3>
               <div className="mt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Swiper
+                  modules={[Navigation, Thumbs]}
+                  navigation
+                  spaceBetween={10}
+                  slidesPerView={1}
+                  className="fabric-swiper"
+                >
                   {fabric.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="bg-off-white p-4 rounded-lg shadow hover:shadow-lg transition-transform hover:scale-105 cursor-pointer"
-                      onClick={() => handleImageClick(image)}
-                    >
-                      <LazyLoadImage
-                        src={image.src}
-                        alt={image.alt}
-                        effect="blur"
-                        className="w-full h-48 object-cover rounded-lg mb-4"
-                      />
-                      <p className="text-sm text-gray-600 text-center">{image.caption}</p>
-                    </div>
+                    <SwiperSlide key={index}>
+                      <div
+                        className="bg-off-white p-4 rounded-lg cursor-pointer"
+                        onClick={() => handleImageClick(image)}
+                      >
+                        <LazyLoadImage
+                          src={image.src}
+                          alt={image.alt}
+                          effect="blur"
+                          className="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <p className="text-sm text-gray-600 text-center">{image.caption}</p>
+                      </div>
+                    </SwiperSlide>
                   ))}
-                </div>
+                </Swiper>
               </div>
               <p className="text-sm text-gray-600 text-center mt-4">৳{fabric.price} per unit</p>
               <p className="text-gray-600 mt-2 text-center">{fabric.desc}</p>
@@ -153,7 +165,7 @@ function Fabrics() {
         <div className="text-center mt-12">
           <Link
             to="/order"
-            className="bg-soft-teal text-off-white px-6 py-3 rounded-lg hover:bg-teal-600 transition"
+            className="gradient-button text-off-white"
           >
             Start Ordering
           </Link>
@@ -198,7 +210,7 @@ function Fabrics() {
                 {selectedImage.caption}
               </p>
               <button
-                className="absolute top-2 right-2 text-deep-charcoal bg-off-white rounded-full p-2 hover:bg-gray-200 transition"
+                className="absolute top-2 right-2 gradient-button text-off-white rounded-full p-2"
                 onClick={handleCloseModal}
               >
                 <svg
@@ -206,7 +218,6 @@ function Fabrics() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     strokeLinecap="round"

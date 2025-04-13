@@ -18,13 +18,15 @@
     "axios": "^1.8.4",
     "framer-motion": "^12.6.5",
     "git": "^0.1.5",
+    "lottie-react": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.55.0",
     "react-lazy-load-image-component": "^1.6.3",
     "react-router-dom": "^7.5.0",
-    "react-zoom-pan-pinch": "^3.7.0"
+    "react-zoom-pan-pinch": "^3.7.0",
+    "swiper": "^11.2.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

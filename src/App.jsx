@@ -2,18 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/footer';
-import ChatWidget from './components/chatwidget'; // New
-import WhatsAppButton from './components/whatsappbutton'; // New
+import ChatWidget from './components/chatwidget';
+import WhatsAppButton from './components/whatsappbutton';
 import Home from './pages/home';
 import Order from './pages/order';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Fabrics from './pages/fabrics';
+import './styles.css';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-off-white flex flex-col">
+      <div className="min-h-screen bg-off-white flex flex-col pt-16">
         <Navbar />
         <main className="flex-grow">
           <Routes>
@@ -25,8 +26,8 @@ function App() {
           </Routes>
         </main>
         <Footer />
-        <ChatWidget /> {/* Added for live chat */}
-        <WhatsAppButton /> {/* Added for WhatsApp */}
+        <ChatWidget />
+        <WhatsAppButton />
       </div>
     </Router>
   );

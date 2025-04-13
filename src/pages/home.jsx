@@ -30,11 +30,11 @@ function Home() {
     Design custom T-shirts and Jerseys with ease, crafted for quality and comfort.
   </p>
   <Link
-    to="/order"
-    className="bg-soft-teal text-off-white px-6 py-3 rounded-lg hover:bg-teal-600 transition"
-  >
-    Start Ordering
-  </Link>
+                to="/order"
+                className="gradient-button inline-block font-semibold"
+              >
+                Start Ordering
+              </Link>
 </div>
 
       {/* Testimonials */}
