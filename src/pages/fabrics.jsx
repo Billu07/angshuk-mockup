@@ -21,9 +21,9 @@ import jacquard3 from '/src/assets/Fabrics/jacquard/image3.jpg';
 import pp1 from '/src/assets/Fabrics/pp/image1.jpg';
 import pp2 from '/src/assets/Fabrics/pp/image2.jpg';
 import pp3 from '/src/assets/Fabrics/pp/image3.jpg';
-import premiumJacquard1 from '/src/assets/Fabrics/premium-jacquard/image1.jpg';
-import premiumJacquard2 from '/src/assets/Fabrics/premium-jacquard/image2.jpg';
-import premiumJacquard3 from '/src/assets/Fabrics/premium-jacquard/image3.jpg';
+import premiumJacquard1 from '/src/assets/Fabrics/premium-Jacquard/image1.jpg';
+import premiumJacquard2 from '/src/assets/Fabrics/premium-Jacquard/image2.jpg';
+import premiumJacquard3 from '/src/assets/Fabrics/premium-Jacquard/image3.jpg';
 
 // Fabrics array
 const fabrics = [
