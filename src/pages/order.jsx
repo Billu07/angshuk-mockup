@@ -8,6 +8,27 @@ import TshirtSvg from '/src/assets/tshirt.svg';
 import JerseySvg from '/src/assets/jersey.svg';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+
+// Import fabric images
+import jacquard1 from '/src/assets/fabrics/jacquard/image1.jpg';
+import jacquard2 from '/src/assets/fabrics/jacquard/image2.jpg';
+import jacquard3 from '/src/assets/fabrics/jacquard/image3.jpg';
+import premiumJacquard1 from '/src/assets/fabrics/premium-jacquard/image1.jpg';
+import premiumJacquard2 from '/src/assets/fabrics/premium-jacquard/image2.jpg';
+import premiumJacquard3 from '/src/assets/fabrics/premium-jacquard/image3.jpg';
+import boxMesh1 from '/src/assets/fabrics/box-mesh/image1.jpg';
+import boxMesh2 from '/src/assets/fabrics/box-mesh/image2.jpg';
+import boxMesh3 from '/src/assets/fabrics/box-mesh/image3.jpg';
+import chinigura1 from '/src/assets/fabrics/chinigura/image1.jpg';
+import chinigura2 from '/src/assets/fabrics/chinigura/image2.jpg';
+import chinigura3 from '/src/assets/fabrics/chinigura/image3.jpg';
+import honeycomb1 from '/src/assets/fabrics/honeycomb/image1.jpg';
+import honeycomb2 from '/src/assets/fabrics/honeycomb/image2.jpg';
+import honeycomb3 from '/src/assets/fabrics/honeycomb/image3.jpg';
+import pp1 from '/src/assets/fabrics/pp/image1.jpg';
+import pp2 from '/src/assets/fabrics/pp/image2.jpg';
+import pp3 from '/src/assets/fabrics/pp/image3.jpg';
 
 const initialOrder = {
   category: null,
@@ -352,13 +373,83 @@ const tshirtOptions = {
   ],
 };
 
+const jerseyFabrics = [
+  {
+    name: 'Jacquard',
+    price: 350,
+    desc: 'Intricate weave, premium feel',
+    image: jacquard1,
+    galleryImages: [
+      { src: jacquard1, alt: 'Jacquard Jersey Front', caption: 'Team jersey front view' },
+      { src: jacquard2, alt: 'Jacquard Jersey Side', caption: 'Side profile in action' },
+      { src: jacquard3, alt: 'Jacquard Detail', caption: 'Close-up of weave' },
+    ],
+  },
+  {
+    name: 'Premium Jacquard',
+    price: 400,
+    desc: 'Luxury fabric, top-tier',
+    image: premiumJacquard1,
+    galleryImages: [
+      { src: premiumJacquard1, alt: 'Premium Jacquard Jersey', caption: 'Elite team kit' },
+      { src: premiumJacquard2, alt: 'Premium Jacquard Back', caption: 'Back design' },
+      { src: premiumJacquard3, alt: 'Premium Jacquard Texture', caption: 'Luxury texture' },
+    ],
+  },
+  {
+    name: 'Box Mesh',
+    price: 300,
+    desc: 'Breathable, sporty design',
+    image: boxMesh1,
+    galleryImages: [
+      { src: boxMesh1, alt: 'Box Mesh Jersey', caption: 'Breathable jersey in game' },
+      { src: boxMesh2, alt: 'Box Mesh Side', caption: 'Side view during play' },
+      { src: boxMesh3, alt: 'Box Mesh Pattern', caption: 'Mesh pattern close-up' },
+    ],
+  },
+  {
+    name: 'Chinigura',
+    price: 320,
+    desc: 'Unique texture, stylish',
+    image: chinigura1,
+    galleryImages: [
+      { src: chinigura1, alt: 'Chinigura Jersey', caption: 'Stylish team jersey' },
+      { src: chinigura2, alt: 'Chinigura Front', caption: 'Front design detail' },
+      { src: chinigura3, alt: 'Chinigura Texture', caption: 'Unique texture shot' },
+    ],
+  },
+  {
+    name: 'Honeycomb',
+    price: 310,
+    desc: 'Lightweight, modern look',
+    image: honeycomb1,
+    galleryImages: [
+      { src: honeycomb1, alt: 'Honeycomb Jersey', caption: 'Dynamic team kit' },
+      { src: honeycomb2, alt: 'Honeycomb Side', caption: 'Side view in motion' },
+      { src: honeycomb3, alt: 'Honeycomb Pattern', caption: 'Honeycomb pattern' },
+    ],
+  },
+  {
+    name: 'PP',
+    price: 290,
+    desc: 'Cost-effective, durable',
+    image: pp1,
+    galleryImages: [
+      { src: pp1, alt: 'PP Jersey', caption: 'Durable team jersey' },
+      { src: pp2, alt: 'PP Front', caption: 'Front view of design' },
+      { src: pp3, alt: 'PP Fabric', caption: 'Fabric durability shot' },
+    ],
+  },
+];
+
 function Order() {
   const [order, dispatch] = useReducer(orderReducer, initialOrder);
   const [step, setStep] = useState(1);
   const [showPreConfirm, setShowPreConfirm] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isBackClicked, setIsBackClicked] = useState(false); // Prevent rapid clicks
+  const [isBackClicked, setIsBackClicked] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -451,17 +542,28 @@ function Order() {
     setStep(5);
   };
 
+  const handleImageClick = () => {
+    if (order.category === 'Jersey' && order.type) {
+      const fabric = jerseyFabrics.find((f) => f.name === order.type);
+      if (fabric && fabric.galleryImages[0]) {
+        setSelectedImage(fabric.galleryImages[0]);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
+
   const prevStep = () => {
-    if (isBackClicked || step === 1) return; // Prevent rapid clicks or back on step 1
+    if (isBackClicked || step === 1) return;
     setIsBackClicked(true);
-    setTimeout(() => setIsBackClicked(false), 300); // Reset after 300ms
+    setTimeout(() => setIsBackClicked(false), 300);
 
     if (step === 2) {
-      // Subcategory → Category
       dispatch({ type: 'SET_CATEGORY', payload: null });
       setStep(1);
     } else if (step === 3) {
-      // Type → Subcategory (T-shirt) or Category (Jersey)
       if (order.category === 'T-shirt') {
         dispatch({ type: 'SET_SUBCATEGORY', payload: null });
         dispatch({ type: 'SET_TYPE', payload: { type: null, color: null } });
@@ -471,7 +573,6 @@ function Order() {
         setStep(1);
       }
     } else if (step === 4) {
-      // Quantity (T-shirt) or Color (Jersey) → Type
       if (order.category === 'T-shirt') {
         dispatch({ type: 'SET_TYPE', payload: { type: null, color: null } });
         setStep(3);
@@ -480,14 +581,12 @@ function Order() {
         setStep(3);
       }
     } else if (step === 5) {
-      // Quantity (Jersey) or Customization (T-shirt) → Color (Jersey) or Quantity (T-shirt)
       if (order.category === 'Jersey') {
         setStep(4);
       } else {
         setStep(4);
       }
     } else if (step === 6) {
-      // Customization (Jersey) → Quantity
       dispatch({ type: 'SET_TEXT', payload: '' });
       dispatch({ type: 'SET_DESIGN', payload: null });
       dispatch({ type: 'SET_COLORS_USED', payload: 0 });
@@ -528,7 +627,6 @@ function Order() {
         <h1 className="text-3xl font-bold text-deep-charcoal text-center mb-8">
           Custom Order
         </h1>
-        {/* Progress Bar */}
         <div className="flex justify-center mb-8 flex-wrap gap-2">
           {[
             'Category',
@@ -569,7 +667,6 @@ function Order() {
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Form */}
           <motion.div
             className="lg:col-span-2 bg-white p-6 rounded-lg shadow"
             initial={{ opacity: 0, x: -20 }}
@@ -746,46 +843,7 @@ function Order() {
                     </Link>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      {
-                        name: 'Jacquard',
-                        price: 350,
-                        desc: 'Intricate weave, premium feel',
-                        preview: 'linear-gradient(45deg, #4B5EAA, #6B7280)',
-                      },
-                      {
-                        name: 'Premium Jacquard',
-                        price: 400,
-                        desc: 'Luxury fabric, top-tier',
-                        preview: 'linear-gradient(45deg, #2D3748, #4A5568)',
-                      },
-                      {
-                        name: 'Box Mesh',
-                        price: 300,
-                        desc: 'Breathable, sporty design',
-                        preview:
-                          'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect x=\'0\' y=\'0\' width=\'10\' height=\'10\' fill=\'%23A0AEC0\'/%3E%3Crect x=\'10\' y=\'10\' width=\'10\' height=\'10\' fill=\'%23A0AEC0\'/%3E%3C/svg%3E")',
-                      },
-                      {
-                        name: 'Chinigura',
-                        price: 320,
-                        desc: 'Unique texture, stylish',
-                        preview: 'linear-gradient(45deg, #718096, #A0AEC0)',
-                      },
-                      {
-                        name: 'Honeycomb',
-                        price: 310,
-                        desc: 'Lightweight, modern look',
-                        preview:
-                          'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M10 2L12 6H8L10 2Z M10 8L12 12H8L10 8Z M10 14L12 18H8L10 14Z\' fill=\'%23718096\'/%3E%3C/svg%3E")',
-                      },
-                      {
-                        name: 'PP',
-                        price: 290,
-                        desc: 'Cost-effective, durable',
-                        preview: 'linear-gradient(45deg, #CBD5E0, #E2E8F0)',
-                      },
-                    ].map((fabric) => (
+                    {jerseyFabrics.map((fabric) => (
                       <div
                         key={fabric.name}
                         onClick={() => handleTypeSelect({ type: fabric.name })}
@@ -801,8 +859,14 @@ function Order() {
                         <div>
                           <div
                             className="w-12 h-12 rounded mb-2"
-                            style={{ background: fabric.preview }}
-                          ></div>
+                          >
+                            <LazyLoadImage
+                              src={fabric.image}
+                              alt={fabric.name}
+                              effect="blur"
+                              className="w-12 h-12 rounded object-cover"
+                            />
+                          </div>
                           <p className="font-medium text-deep-charcoal">{fabric.name}</p>
                           <p className="text-sm text-gray-600">৳{fabric.price} per unit</p>
                           <p className="text-sm text-gray-600">{fabric.desc}</p>
@@ -1009,7 +1073,6 @@ function Order() {
               )}
             </AnimatePresence>
           </motion.div>
-          {/* Preview */}
           <motion.div
             className="bg-white p-6 rounded-lg shadow"
             initial={{ opacity: 0, x: 20 }}
@@ -1025,12 +1088,18 @@ function Order() {
                   effect="blur"
                   className="w-full h-48 object-cover rounded-lg"
                 />
-              ) : order.category === 'Jersey' ? (
-                <img
-                  src={JerseySvg}
-                  alt="Jersey Preview"
-                  className="w-full h-48 object-contain"
-                />
+              ) : order.category === 'Jersey' && order.type ? (
+                <div
+                  onClick={handleImageClick}
+                  className="cursor-pointer"
+                >
+                  <LazyLoadImage
+                    src={jerseyFabrics.find((f) => f.name === order.type)?.image}
+                    alt={order.type}
+                    effect="blur"
+                    className="w-full h-48 object-cover rounded-lg hover:opacity-90 transition"
+                  />
+                </div>
               ) : (
                 <div className="w-full h-48 bg-light-gray rounded-lg flex items-center justify-center">
                   <p className="text-gray-600">Select an item to preview</p>
@@ -1089,6 +1158,81 @@ function Order() {
           </motion.div>
         </div>
       </div>
+      {/* Image Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCloseModal}
+          >
+            <motion.div
+              className="bg-off-white p-6 rounded-lg shadow-lg relative max-w-[80vw] max-h-[80vh] overflow-visible"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <TransformWrapper
+                initialScale={1}
+                minScale={1}
+                maxScale={4}
+                wheel={{ step: 0.2 }}
+                pinch={{ step: 0.05 }}
+                doubleClick={{ disabled: false }}
+                panning={{ velocityDisabled: false }}
+              >
+                {({ resetTransform }) => (
+                  <>
+                    <TransformComponent>
+                      <img
+                        src={selectedImage.src}
+                        alt={selectedImage.alt}
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          maxWidth: '80vw',
+                          maxHeight: '80vh',
+                          objectFit: 'contain',
+                          cursor: 'grab',
+                          pointerEvents: 'auto',
+                        }}
+                      />
+                    </TransformComponent>
+                    <button
+                      onClick={() => resetTransform()}
+                      className="absolute top-2 right-12 bg-soft-teal text-off-white px-2 py-1 rounded text-sm hover:bg-teal-600 transition"
+                    >
+                      Reset Zoom
+                    </button>
+                  </>
+                )}
+              </TransformWrapper>
+              <button
+                className="absolute top-2 right-2 text-deep-charcoal bg-off-white rounded-full p-2 hover:bg-gray-200 transition"
+                onClick={handleCloseModal}
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Pre-Confirmation Modal */}
       {showPreConfirm && (
         <motion.div
