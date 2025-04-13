@@ -5,13 +5,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Import images explicitly for each fabric (placeholders)
-import jacquard1 from '/src/assets/Fabrics/jacquard/image1.jpg';
-import jacquard2 from '/src/assets/Fabrics/jacquard/image2.jpg';
-import jacquard3 from '/src/assets/Fabrics/jacquard/image3.jpg';
-import premiumJacquard1 from '/src/assets/Fabrics/premium-jacquard/image1.jpg';
-import premiumJacquard2 from '/src/assets/Fabrics/premium-jacquard/image2.jpg';
-import premiumJacquard3 from '/src/assets/Fabrics/premium-jacquard/image3.jpg';
+// Import fabric images
 import boxMesh1 from '/src/assets/Fabrics/box-mesh/image1.jpg';
 import boxMesh2 from '/src/assets/Fabrics/box-mesh/image2.jpg';
 import boxMesh3 from '/src/assets/Fabrics/box-mesh/image3.jpg';
@@ -21,9 +15,15 @@ import chinigura3 from '/src/assets/Fabrics/chinigura/image3.jpg';
 import honeycomb1 from '/src/assets/Fabrics/honeycomb/image1.jpg';
 import honeycomb2 from '/src/assets/Fabrics/honeycomb/image2.jpg';
 import honeycomb3 from '/src/assets/Fabrics/honeycomb/image3.jpg';
+import jacquard1 from '/src/assets/Fabrics/jacquard/image1.jpg';
+import jacquard2 from '/src/assets/Fabrics/jacquard/image2.jpg';
+import jacquard3 from '/src/assets/Fabrics/jacquard/image3.jpg';
 import pp1 from '/src/assets/Fabrics/pp/image1.jpg';
 import pp2 from '/src/assets/Fabrics/pp/image2.jpg';
 import pp3 from '/src/assets/Fabrics/pp/image3.jpg';
+import premiumJacquard1 from '/src/assets/Fabrics/premium-jacquard/image1.jpg';
+import premiumJacquard2 from '/src/assets/Fabrics/premium-jacquard/image2.jpg';
+import premiumJacquard3 from '/src/assets/Fabrics/premium-jacquard/image3.jpg';
 
 // Fabrics array
 const fabrics = [
