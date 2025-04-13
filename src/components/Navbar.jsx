@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Adjust path as needed
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,7 @@ function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/">
-              Angshuk Original
+              <img src={logo} alt="Angshuk Logo" className="h-16 w-auto object-contain mr-2" />
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-4">

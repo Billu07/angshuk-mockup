@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet'; // Added
+import logo from '../assets/logo.png';
 
 function Home() {
   return (
@@ -16,20 +17,26 @@ function Home() {
       </Helmet>
 
       {/* Hero Section */}
-      <div className="pt-20 pb-16 flex flex-col items-center justify-center bg-gradient-to-b from-light-gray to-off-white">
-        <h1 className="text-5xl font-bold text-deep-charcoal mb-4 text-center">
-          Welcome to Angshuk
-        </h1>
-        <p className="text-lg text-gray-600 mb-8 max-w-md text-center">
-          Design custom T-shirts and Jerseys with ease, crafted for quality and comfort.
-        </p>
-        <Link
-          to="/order"
-          className="bg-soft-teal text-off-white px-6 py-3 rounded-lg hover:bg-teal-600 transition"
-        >
-          Start Ordering
-        </Link>
-      </div>
+<div className="pt-20 pb-16 flex flex-col items-center justify-center bg-gradient-to-b from-light-gray to-off-white">
+  <img
+    src={logo}
+    alt="Angshuk Logo"
+    className="h-36 md:h-48 lg:h-56 w-auto object-contain mb-6"
+  />
+  <h1 className="text-5xl font-bold text-deep-charcoal mb-4 text-center">
+    Welcome to Angshuk
+  </h1>
+  <p className="text-lg text-gray-600 mb-8 max-w-md text-center">
+    Design custom T-shirts and Jerseys with ease, crafted for quality and comfort.
+  </p>
+  <Link
+    to="/order"
+    className="bg-soft-teal text-off-white px-6 py-3 rounded-lg hover:bg-teal-600 transition"
+  >
+    Start Ordering
+  </Link>
+</div>
+
       {/* Testimonials */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-3xl font-bold text-deep-charcoal text-center mb-8">

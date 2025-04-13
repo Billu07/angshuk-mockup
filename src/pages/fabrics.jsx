@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 // Import fabric images
 import boxMesh1 from '/src/assets/Fabrics/box-mesh/image1.jpg';
@@ -32,9 +33,9 @@ const fabrics = [
     price: 350,
     desc: 'A richly woven fabric with intricate patterns, perfect for premium jerseys with a sophisticated look.',
     images: [
-      { src: jacquard1, alt: 'Jacquard Jersey Front' },
-      { src: jacquard2, alt: 'Jacquard Jersey Side' },
-      { src: jacquard3, alt: 'Jacquard Detail' },
+      { src: jacquard1, alt: 'Jacquard Jersey Front', caption: 'Team jersey front view' },
+      { src: jacquard2, alt: 'Jacquard Jersey Side', caption: 'Side profile in action' },
+      { src: jacquard3, alt: 'Jacquard Detail', caption: 'Close-up of weave' },
     ],
   },
   {
@@ -42,9 +43,9 @@ const fabrics = [
     price: 400,
     desc: 'The ultimate luxury fabric, offering unmatched softness and durability for top-tier jerseys.',
     images: [
-      { src: premiumJacquard1, alt: 'Premium Jacquard Jersey' },
-      { src: premiumJacquard2, alt: 'Premium Jacquard Back' },
-      { src: premiumJacquard3, alt: 'Premium Jacquard Texture' },
+      { src: premiumJacquard1, alt: 'Premium Jacquard Jersey', caption: 'Elite team kit' },
+      { src: premiumJacquard2, alt: 'Premium Jacquard Back', caption: 'Back design' },
+      { src: premiumJacquard3, alt: 'Premium Jacquard Texture', caption: 'Luxury texture' },
     ],
   },
   {
@@ -52,9 +53,9 @@ const fabrics = [
     price: 300,
     desc: 'Highly breathable with a grid-like structure, ideal for athletic jerseys needing ventilation.',
     images: [
-      { src: boxMesh1, alt: 'Box Mesh Jersey' },
-      { src: boxMesh2, alt: 'Box Mesh Side' },
-      { src: boxMesh3, alt: 'Box Mesh Pattern' },
+      { src: boxMesh1, alt: 'Box Mesh Jersey', caption: 'Breathable jersey in game' },
+      { src: boxMesh2, alt: 'Box Mesh Side', caption: 'Side view during play' },
+      { src: boxMesh3, alt: 'Box Mesh Pattern', caption: 'Mesh pattern close-up' },
     ],
   },
   {
@@ -62,9 +63,9 @@ const fabrics = [
     price: 320,
     desc: 'A textured weave with a unique feel, blending style and comfort for standout jerseys.',
     images: [
-      { src: chinigura1, alt: 'Chinigura Jersey' },
-      { src: chinigura2, alt: 'Chinigura Front' },
-      { src: chinigura3, alt: 'Chinigura Texture' },
+      { src: chinigura1, alt: 'Chinigura Jersey', caption: 'Stylish team jersey' },
+      { src: chinigura2, alt: 'Chinigura Front', caption: 'Front design detail' },
+      { src: chinigura3, alt: 'Chinigura Texture', caption: 'Unique texture shot' },
     ],
   },
   {
@@ -72,9 +73,9 @@ const fabrics = [
     price: 310,
     desc: 'Lightweight with a hexagonal pattern, offering a modern aesthetic and breathability.',
     images: [
-      { src: honeycomb1, alt: 'Honeycomb Jersey' },
-      { src: honeycomb2, alt: 'Honeycomb Side' },
-      { src: honeycomb3, alt: 'Honeycomb Pattern' },
+      { src: honeycomb1, alt: 'Honeycomb Jersey', caption: 'Dynamic team kit' },
+      { src: honeycomb2, alt: 'Honeycomb Side', caption: 'Side view in motion' },
+      { src: honeycomb3, alt: 'Honeycomb Pattern', caption: 'Honeycomb pattern' },
     ],
   },
   {
@@ -82,9 +83,9 @@ const fabrics = [
     price: 290,
     desc: 'A durable, budget-friendly fabric designed for long-lasting jerseys without compromising quality.',
     images: [
-      { src: pp1, alt: 'PP Jersey' },
-      { src: pp2, alt: 'PP Front' },
-      { src: pp3, alt: 'PP Fabric' },
+      { src: pp1, alt: 'PP Jersey', caption: 'Durable team jersey' },
+      { src: pp2, alt: 'PP Front', caption: 'Front view of design' },
+      { src: pp3, alt: 'PP Fabric', caption: 'Fabric durability shot' },
     ],
   },
 ];
@@ -159,7 +160,7 @@ function Fabrics() {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Zoomable Modal */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -170,17 +171,32 @@ function Fabrics() {
             onClick={handleCloseModal}
           >
             <motion.div
-              className="bg-off-white p-6 rounded-lg shadow-lg relative max-w-[80vw] max-h-[80vh] overflow-auto"
+              className="bg-off-white p-6 rounded-lg shadow-lg relative max-w-[80vw] max-h-[80vh] overflow-visible"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                className="w-full max-w-[80vw] max-h-[80vh] object-contain"
-              />
+              <TransformWrapper
+                initialScale={1}
+                minScale={1}
+                maxScale={4}
+                wheel={{ step: 0.2 }}
+                pinch={{ step: 0.05 }}
+                doubleClick={{ disabled: false }}
+                panning={{ velocityDisabled: false }}
+              >
+                <TransformComponent>
+                  <img
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    className="max-w-full max-h-[60vh] object-contain"
+                  />
+                </TransformComponent>
+              </TransformWrapper>
+              <p className="text-center text-deep-charcoal mt-4 text-sm">
+                {selectedImage.caption}
+              </p>
               <button
                 className="absolute top-2 right-2 text-deep-charcoal bg-off-white rounded-full p-2 hover:bg-gray-200 transition"
                 onClick={handleCloseModal}
