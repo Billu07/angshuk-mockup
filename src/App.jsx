@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/footer';
-import ChatWidget from './components/chatWidget'; // New
-import WhatsAppButton from './components/whatsAppButton'; // New
+import ChatWidget from './components/chatwidget'; // New
+import WhatsAppButton from './components/whatsappbutton'; // New
 import Home from './pages/home';
 import Order from './pages/order';
 import About from './pages/about';
