@@ -3,66 +3,80 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Helmet } from 'react-helmet';
 
-// Updated galleryItems to use assets folder (placeholders until real filenames provided)
+// Import images explicitly for Vite bundling
+import image1 from '/src/assets/about-gallery/image1.jpg';
+import image2 from '/src/assets/about-gallery/image2.jpg';
+import image3 from '/src/assets/about-gallery/image3.jpg';
+import image4 from '/src/assets/about-gallery/image4.jpg';
+import image5 from '/src/assets/about-gallery/image5.jpg';
+import image6 from '/src/assets/about-gallery/image6.jpg';
+import image7 from '/src/assets/about-gallery/image7.jpg';
+import image8 from '/src/assets/about-gallery/image8.jpg';
+import image9 from '/src/assets/about-gallery/image9.jpg';
+import image10 from '/src/assets/about-gallery/image10.jpg';
+import image11 from '/src/assets/about-gallery/image11.jpg';
+import image12 from '/src/assets/about-gallery/image12.jpg';
+
+// Updated galleryItems with imported images
 const galleryItems = [
   {
-    src: '/src/assets/about-gallery/image1.jpg',
-    alt: '',
+    src: image1,
+    alt: 'Custom Team Jersey',
     desc: 'Designed for a local sports team',
   },
   {
-    src: '/src/assets/about-gallery/image2.jpg',
-    alt: '',
+    src: image2,
+    alt: 'Factory Stitching Line',
     desc: 'Precision stitching by our skilled team',
   },
   {
-    src: '/src/assets/about-gallery/image3.jpg',
-    alt: '',
+    src: image3,
+    alt: 'Corporate T-shirts',
     desc: 'Branded apparel for a business event',
   },
   {
-    src: '/src/assets/about-gallery/image4.jpg',
-    alt: '',
+    src: image4,
+    alt: 'Fabric Cutting',
     desc: 'High-quality cuts for perfect fits',
   },
   {
-    src: '/src/assets/about-gallery/image5.jpg',
-    alt: '',
+    src: image5,
+    alt: 'Custom Hoodie Collection',
     desc: 'Unique designs for a festival',
   },
   {
-    src: '/src/assets/about-gallery/image6.jpg',
-    alt: '',
+    src: image6,
+    alt: 'Quality Control',
     desc: 'Ensuring every piece meets our standards',
   },
   {
-    src: '/src/assets/about-gallery/image7.jpg',
-    alt: '',
+    src: image7,
+    alt: 'Custom Team Jersey',
     desc: 'Designed for a local sports team',
   },
   {
-    src: '/src/assets/about-gallery/image8.jpg',
-    alt: '',
+    src: image8,
+    alt: 'Factory Stitching Line',
     desc: 'Precision stitching by our skilled team',
   },
   {
-    src: '/src/assets/about-gallery/image9.jpg',
-    alt: '',
+    src: image9,
+    alt: 'Corporate T-shirts',
     desc: 'Branded apparel for a business event',
   },
   {
-    src: '/src/assets/about-gallery/image10.jpg',
-    alt: '',
+    src: image10,
+    alt: 'Fabric Cutting',
     desc: 'High-quality cuts for perfect fits',
   },
   {
-    src: '/src/assets/about-gallery/image11.jpg',
-    alt: '',
+    src: image11,
+    alt: 'Custom Hoodie Collection',
     desc: 'Unique designs for a festival',
   },
   {
-    src: '/src/assets/about-gallery/image12.jpg',
-    alt: '',
+    src: image12,
+    alt: 'Quality Control',
     desc: 'Ensuring every piece meets our standards',
   },
 ];
