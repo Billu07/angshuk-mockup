@@ -3,37 +3,67 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Helmet } from 'react-helmet';
 
-// Restored full galleryItems
+// Updated galleryItems to use assets folder (placeholders until real filenames provided)
 const galleryItems = [
   {
-    src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Custom Team Jersey 2024',
-    desc: 'Designed for the championship-winning team of 2024',
+    src: '/src/assets/about-gallery/image1.jpg',
+    alt: '',
+    desc: 'Designed for a local sports team',
   },
   {
-    src: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Factory Stitching Line',
-    desc: 'Our skilled team at work, ensuring precision in every stitch',
+    src: '/src/assets/about-gallery/image2.jpg',
+    alt: '',
+    desc: 'Precision stitching by our skilled team',
   },
   {
-    src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Corporate T-shirts 2023',
-    desc: 'Branded T-shirts for a corporate event, blending style and comfort',
+    src: '/src/assets/about-gallery/image3.jpg',
+    alt: '',
+    desc: 'Branded apparel for a business event',
   },
   {
-    src: 'https://images.unsplash.com/photo-1582213781779-0a8a5a6e3e7c?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Factory Fabric Cutting',
-    desc: 'High-quality fabric cutting for perfect fits',
+    src: '/src/assets/about-gallery/image4.jpg',
+    alt: '',
+    desc: 'High-quality cuts for perfect fits',
   },
   {
-    src: 'https://images.unsplash.com/photo-1572795768287-4f46a1eb24b8?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Custom Hoodie Collection',
-    desc: 'Limited edition hoodies for a local music festival',
+    src: '/src/assets/about-gallery/image5.jpg',
+    alt: '',
+    desc: 'Unique designs for a festival',
   },
   {
-    src: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=2070&auto=format&fit=crop',
-    alt: 'Quality Control Station',
-    desc: 'Every piece undergoes strict quality checks',
+    src: '/src/assets/about-gallery/image6.jpg',
+    alt: '',
+    desc: 'Ensuring every piece meets our standards',
+  },
+  {
+    src: '/src/assets/about-gallery/image7.jpg',
+    alt: '',
+    desc: 'Designed for a local sports team',
+  },
+  {
+    src: '/src/assets/about-gallery/image8.jpg',
+    alt: '',
+    desc: 'Precision stitching by our skilled team',
+  },
+  {
+    src: '/src/assets/about-gallery/image9.jpg',
+    alt: '',
+    desc: 'Branded apparel for a business event',
+  },
+  {
+    src: '/src/assets/about-gallery/image10.jpg',
+    alt: '',
+    desc: 'High-quality cuts for perfect fits',
+  },
+  {
+    src: '/src/assets/about-gallery/image11.jpg',
+    alt: '',
+    desc: 'Unique designs for a festival',
+  },
+  {
+    src: '/src/assets/about-gallery/image12.jpg',
+    alt: '',
+    desc: 'Ensuring every piece meets our standards',
   },
 ];
 
@@ -75,20 +105,16 @@ function About() {
             {galleryItems.map((item, index) => (
               <div
                 key={index}
-                className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="bg-off-white p-4 rounded-lg shadow hover:shadow-lg transition-transform hover:scale-105"
               >
                 <LazyLoadImage
                   src={item.src}
                   alt={item.alt}
                   effect="blur"
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="w-full h-64 object-cover rounded-lg mb-4"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="text-center text-off-white">
-                    <h3 className="text-lg font-semibold">{item.alt}</h3>
-                    <p className="text-sm">{item.desc}</p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-semibold text-deep-charcoal text-center">{item.alt}</h3>
+                <p className="text-sm text-gray-600 text-center">{item.desc}</p>
               </div>
             ))}
           </div>

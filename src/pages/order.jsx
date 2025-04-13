@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import TshirtSvg from '/src/assets/tshirt.svg';
 import JerseySvg from '/src/assets/jersey.svg';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const initialOrder = {
   category: null,
@@ -23,9 +25,9 @@ const orderReducer = (state, action) => {
     case 'SET_CATEGORY':
       return { ...initialOrder, category: action.payload };
     case 'SET_SUBCATEGORY':
-      return { ...state, subcategory: action.payload, type: null };
+      return { ...state, subcategory: action.payload, type: null, color: null };
     case 'SET_TYPE':
-      return { ...state, type: action.payload };
+      return { ...state, type: action.payload.type, color: action.payload.color || null };
     case 'SET_COLOR':
       return { ...state, color: action.payload };
     case 'SET_QUANTITY':
@@ -43,47 +45,12 @@ const orderReducer = (state, action) => {
   }
 };
 
-// Restored full tshirtOptions
 const tshirtOptions = {
   'Angshuk A+': [
     {
-      name: 'JHK (Black)',
-      pricing: [
-        { range: [1000, Infinity], price: 199 },
-        { range: [800, 1000], price: 100 },
-        { range: [600, 800], price: 105 },
-        { range: [500, 600], price: 110 },
-        { range: [300, 400], price: 115 },
-        { range: [200, 300], price: 120 },
-        { range: [150, 200], price: 125 },
-        { range: [100, 150], price: 130 },
-        { range: [50, 99], price: 135 },
-        { range: [30, 49], price: 145 },
-        { range: [20, 30], price: 160 },
-        { range: [10, 20], price: 170 },
-      ],
-      desc: 'Premium black JHK T-shirt, branded quality',
-    },
-    {
-      name: 'JHK (Other Colours)',
-      pricing: [
-        { range: [1000, Infinity], price: 222 },
-        { range: [800, 1000], price: 110 },
-        { range: [600, 800], price: 115 },
-        { range: [500, 600], price: 120 },
-        { range: [300, 400], price: 125 },
-        { range: [200, 300], price: 130 },
-        { range: [150, 200], price: 135 },
-        { range: [100, 150], price: 140 },
-        { range: [50, 99], price: 145 },
-        { range: [30, 49], price: 155 },
-        { range: [20, 30], price: 170 },
-        { range: [10, 20], price: 180 },
-      ],
-      desc: 'Vibrant JHK T-shirt in various colours, branded style',
-    },
-    {
-      name: 'ID',
+      name: 'Black Premium Shirt',
+      color: 'Black',
+      image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=800&auto=format&fit=crop',
       pricing: [
         { range: [1000, Infinity], price: 277 },
         { range: [800, 1000], price: 170 },
@@ -98,22 +65,300 @@ const tshirtOptions = {
         { range: [20, 30], price: 222 },
         { range: [10, 20], price: 244 },
       ],
-      desc: 'Premium ID branded T-shirt, top-tier comfort',
+      desc: 'Premium black T-shirt, sleek and stylish',
+    },
+    {
+      name: 'Navy Premium Shirt',
+      color: 'Navy',
+      image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 280 },
+        { range: [800, 1000], price: 172 },
+        { range: [600, 800], price: 177 },
+        { range: [500, 600], price: 182 },
+        { range: [300, 400], price: 184 },
+        { range: [200, 300], price: 187 },
+        { range: [150, 200], price: 190 },
+        { range: [100, 150], price: 193 },
+        { range: [50, 99], price: 198 },
+        { range: [30, 49], price: 203 },
+        { range: [20, 30], price: 225 },
+        { range: [10, 20], price: 247 },
+      ],
+      desc: 'Rich navy T-shirt, bold and elegant',
+    },
+    {
+      name: 'Red Premium Shirt',
+      color: 'Red',
+      image: 'https://images.unsplash.com/photo-1622470953794-45bffe22f9db?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 282 },
+        { range: [800, 1000], price: 174 },
+        { range: [600, 800], price: 179 },
+        { range: [500, 600], price: 184 },
+        { range: [300, 400], price: 186 },
+        { range: [200, 300], price: 189 },
+        { range: [150, 200], price: 192 },
+        { range: [100, 150], price: 195 },
+        { range: [50, 99], price: 200 },
+        { range: [30, 49], price: 205 },
+        { range: [20, 30], price: 227 },
+        { range: [10, 20], price: 250 },
+      ],
+      desc: 'Vibrant red T-shirt, eye-catching design',
+    },
+    {
+      name: 'White Premium Shirt',
+      color: 'White',
+      image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 285 },
+        { range: [800, 1000], price: 176 },
+        { range: [600, 800], price: 181 },
+        { range: [500, 600], price: 186 },
+        { range: [300, 400], price: 188 },
+        { range: [200, 300], price: 191 },
+        { range: [150, 200], price: 194 },
+        { range: [100, 150], price: 197 },
+        { range: [50, 99], price: 202 },
+        { range: [30, 49], price: 207 },
+        { range: [20, 30], price: 230 },
+        { range: [10, 20], price: 253 },
+      ],
+      desc: 'Clean white T-shirt, timeless comfort',
+    },
+    {
+      name: 'Green Premium Shirt',
+      color: 'Green',
+      image: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 280 },
+        { range: [800, 1000], price: 172 },
+        { range: [600, 800], price: 177 },
+        { range: [500, 600], price: 182 },
+        { range: [300, 400], price: 184 },
+        { range: [200, 300], price: 187 },
+        { range: [150, 200], price: 190 },
+        { range: [100, 150], price: 193 },
+        { range: [50, 99], price: 198 },
+        { range: [30, 49], price: 203 },
+        { range: [20, 30], price: 225 },
+        { range: [10, 20], price: 247 },
+      ],
+      desc: 'Fresh green T-shirt, nature-inspired',
+    },
+    {
+      name: 'Gray Premium Shirt',
+      color: 'Gray',
+      image: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 278 },
+        { range: [800, 1000], price: 171 },
+        { range: [600, 800], price: 176 },
+        { range: [500, 600], price: 181 },
+        { range: [300, 400], price: 183 },
+        { range: [200, 300], price: 186 },
+        { range: [150, 200], price: 189 },
+        { range: [100, 150], price: 192 },
+        { range: [50, 99], price: 197 },
+        { range: [30, 49], price: 202 },
+        { range: [20, 30], price: 224 },
+        { range: [10, 20], price: 246 },
+      ],
+      desc: 'Sleek gray T-shirt, modern and versatile',
+    },
+    {
+      name: 'Blue Premium Shirt',
+      color: 'Blue',
+      image: 'https://images.unsplash.com/photo-1603251578711-3290ca1a0187?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 279 },
+        { range: [800, 1000], price: 173 },
+        { range: [600, 800], price: 178 },
+        { range: [500, 600], price: 183 },
+        { range: [300, 400], price: 185 },
+        { range: [200, 300], price: 188 },
+        { range: [150, 200], price: 191 },
+        { range: [100, 150], price: 194 },
+        { range: [50, 99], price: 199 },
+        { range: [30, 49], price: 204 },
+        { range: [20, 30], price: 226 },
+        { range: [10, 20], price: 248 },
+      ],
+      desc: 'Cool blue T-shirt, vibrant and bold',
+    },
+    {
+      name: 'Yellow Premium Shirt',
+      color: 'Yellow',
+      image: 'https://images.unsplash.com/photo-1596755933627-1c4bdce74d6f?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 283 },
+        { range: [800, 1000], price: 175 },
+        { range: [600, 800], price: 180 },
+        { range: [500, 600], price: 185 },
+        { range: [300, 400], price: 187 },
+        { range: [200, 300], price: 190 },
+        { range: [150, 200], price: 193 },
+        { range: [100, 150], price: 196 },
+        { range: [50, 99], price: 201 },
+        { range: [30, 49], price: 206 },
+        { range: [20, 30], price: 228 },
+        { range: [10, 20], price: 251 },
+      ],
+      desc: 'Bright yellow T-shirt, cheerful and lively',
+    },
+    {
+      name: 'Maroon Premium Shirt',
+      color: 'Maroon',
+      image: 'https://images.unsplash.com/photo-1601066522818-73d347e8f7c1?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 281 },
+        { range: [800, 1000], price: 174 },
+        { range: [600, 800], price: 179 },
+        { range: [500, 600], price: 184 },
+        { range: [300, 400], price: 186 },
+        { range: [200, 300], price: 189 },
+        { range: [150, 200], price: 192 },
+        { range: [100, 150], price: 195 },
+        { range: [50, 99], price: 200 },
+        { range: [30, 49], price: 205 },
+        { range: [20, 30], price: 227 },
+        { range: [10, 20], price: 250 },
+      ],
+      desc: 'Deep maroon T-shirt, sophisticated and warm',
+    },
+    {
+      name: 'Olive Premium Shirt',
+      color: 'Olive',
+      image: 'https://images.unsplash.com/photo-1602293589930-45aad59ba4ab?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 280 },
+        { range: [800, 1000], price: 173 },
+        { range: [600, 800], price: 178 },
+        { range: [500, 600], price: 183 },
+        { range: [300, 400], price: 185 },
+        { range: [200, 300], price: 188 },
+        { range: [150, 200], price: 191 },
+        { range: [100, 150], price: 194 },
+        { range: [50, 99], price: 199 },
+        { range: [30, 49], price: 204 },
+        { range: [20, 30], price: 226 },
+        { range: [10, 20], price: 248 },
+      ],
+      desc: 'Earthy olive T-shirt, rugged and stylish',
     },
   ],
   'Angshuk A': [
-    { name: 'Basic Cotton', price: 200, desc: 'Simple and affordable cotton tee' },
-    { name: 'Standard Fit', price: 220, desc: 'Comfortable fit for daily wear' },
-    { name: 'Classic Tee', price: 210, desc: 'Timeless design, non-branded' },
+    {
+      name: 'Black Shirt',
+      color: 'Black',
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 200 },
+        { range: [800, 1000], price: 202 },
+        { range: [600, 800], price: 204 },
+        { range: [500, 600], price: 206 },
+        { range: [300, 400], price: 208 },
+        { range: [200, 300], price: 210 },
+        { range: [150, 200], price: 212 },
+        { range: [100, 150], price: 214 },
+        { range: [50, 99], price: 216 },
+        { range: [30, 49], price: 218 },
+        { range: [20, 30], price: 220 },
+        { range: [10, 20], price: 222 },
+      ],
+      desc: 'Classic black T-shirt, versatile and stylish',
+    },
+    {
+      name: 'White Shirt',
+      color: 'White',
+      image: 'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 205 },
+        { range: [800, 1000], price: 207 },
+        { range: [600, 800], price: 209 },
+        { range: [500, 600], price: 211 },
+        { range: [300, 400], price: 213 },
+        { range: [200, 300], price: 215 },
+        { range: [150, 200], price: 217 },
+        { range: [100, 150], price: 219 },
+        { range: [50, 99], price: 221 },
+        { range: [30, 49], price: 223 },
+        { range: [20, 30], price: 225 },
+        { range: [10, 20], price: 227 },
+      ],
+      desc: 'Clean white T-shirt, perfect for any occasion',
+    },
+    {
+      name: 'Blue Shirt',
+      color: 'Blue',
+      image: 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 203 },
+        { range: [800, 1000], price: 205 },
+        { range: [600, 800], price: 207 },
+        { range: [500, 600], price: 209 },
+        { range: [300, 400], price: 211 },
+        { range: [200, 300], price: 213 },
+        { range: [150, 200], price: 215 },
+        { range: [100, 150], price: 217 },
+        { range: [50, 99], price: 219 },
+        { range: [30, 49], price: 221 },
+        { range: [20, 30], price: 223 },
+        { range: [10, 20], price: 225 },
+      ],
+      desc: 'Vibrant blue T-shirt, bold and comfortable',
+    },
+    {
+      name: 'Red Shirt',
+      color: 'Red',
+      image: 'https://images.unsplash.com/photo-1519058082700-6b8b757e4d14?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 204 },
+        { range: [800, 1000], price: 206 },
+        { range: [600, 800], price: 208 },
+        { range: [500, 600], price: 210 },
+        { range: [300, 400], price: 212 },
+        { range: [200, 300], price: 214 },
+        { range: [150, 200], price: 216 },
+        { range: [100, 150], price: 218 },
+        { range: [50, 99], price: 220 },
+        { range: [30, 49], price: 222 },
+        { range: [20, 30], price: 224 },
+        { range: [10, 20], price: 226 },
+      ],
+      desc: 'Striking red T-shirt, energetic and sleek',
+    },
+    {
+      name: 'Green Shirt',
+      color: 'Green',
+      image: 'https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?q=80&w=800&auto=format&fit=crop',
+      pricing: [
+        { range: [1000, Infinity], price: 202 },
+        { range: [800, 1000], price: 204 },
+        { range: [600, 800], price: 206 },
+        { range: [500, 600], price: 208 },
+        { range: [300, 400], price: 210 },
+        { range: [200, 300], price: 212 },
+        { range: [150, 200], price: 214 },
+        { range: [100, 150], price: 216 },
+        { range: [50, 99], price: 218 },
+        { range: [30, 49], price: 220 },
+        { range: [20, 30], price: 222 },
+        { range: [10, 20], price: 224 },
+      ],
+      desc: 'Fresh green T-shirt, lively and modern',
+    },
   ],
 };
 
 function Order() {
   const [order, dispatch] = useReducer(orderReducer, initialOrder);
   const [step, setStep] = useState(1);
-  const [showPreConfirm, setShowPreConfirm] = useState(false); // Added for pre-submission popup
+  const [showPreConfirm, setShowPreConfirm] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBackClicked, setIsBackClicked] = useState(false); // Prevent rapid clicks
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -132,14 +377,10 @@ function Order() {
         const tshirtList = tshirtOptions[order.subcategory] || [];
         const selectedTshirt = tshirtList.find((t) => t.name === order.type);
         if (selectedTshirt) {
-          if (order.subcategory === 'Angshuk A+') {
-            const pricingTier = selectedTshirt.pricing.find(
-              (tier) => order.quantity >= tier.range[0] && order.quantity <= tier.range[1]
-            );
-            basePrice = pricingTier ? pricingTier.price : selectedTshirt.pricing[0].price;
-          } else {
-            basePrice = selectedTshirt.price;
-          }
+          const pricingTier = selectedTshirt.pricing.find(
+            (tier) => order.quantity >= tier.range[0] && order.quantity <= tier.range[1]
+          );
+          basePrice = pricingTier ? pricingTier.price : selectedTshirt.pricing[0].price;
         }
       } else if (order.category === 'Jersey') {
         if (order.type === 'Jacquard') basePrice = 350;
@@ -184,14 +425,10 @@ function Order() {
     const selectedTshirt = tshirtList.find((t) => t.name === order.type);
     if (!selectedTshirt) return 0;
 
-    if (order.subcategory === 'Angshuk A+') {
-      const pricingTier = selectedTshirt.pricing.find(
-        (tier) => order.quantity >= tier.range[0] && order.quantity <= tier.range[1]
-      );
-      return pricingTier ? pricingTier.price : selectedTshirt.pricing[0].price;
-    } else {
-      return selectedTshirt.price;
-    }
+    const pricingTier = selectedTshirt.pricing.find(
+      (tier) => order.quantity >= tier.range[0] && order.quantity <= tier.range[1]
+    );
+    return pricingTier ? pricingTier.price : selectedTshirt.pricing[0].price;
   };
 
   const handleCategorySelect = (category) => {
@@ -204,8 +441,8 @@ function Order() {
     setStep(3);
   };
 
-  const handleTypeSelect = (type) => {
-    dispatch({ type: 'SET_TYPE', payload: type });
+  const handleTypeSelect = (typeObj) => {
+    dispatch({ type: 'SET_TYPE', payload: typeObj });
     setStep(4);
   };
 
@@ -215,24 +452,42 @@ function Order() {
   };
 
   const prevStep = () => {
+    if (isBackClicked || step === 1) return; // Prevent rapid clicks or back on step 1
+    setIsBackClicked(true);
+    setTimeout(() => setIsBackClicked(false), 300); // Reset after 300ms
+
     if (step === 2) {
-      dispatch({ type: 'SET_SUBCATEGORY', payload: null });
+      // Subcategory → Category
+      dispatch({ type: 'SET_CATEGORY', payload: null });
       setStep(1);
     } else if (step === 3) {
+      // Type → Subcategory (T-shirt) or Category (Jersey)
       if (order.category === 'T-shirt') {
-        dispatch({ type: 'SET_TYPE', payload: null });
+        dispatch({ type: 'SET_SUBCATEGORY', payload: null });
+        dispatch({ type: 'SET_TYPE', payload: { type: null, color: null } });
         setStep(2);
       } else {
         dispatch({ type: 'RESET' });
         setStep(1);
       }
     } else if (step === 4) {
-      dispatch({ type: 'SET_COLOR', payload: null });
-      setStep(3);
+      // Quantity (T-shirt) or Color (Jersey) → Type
+      if (order.category === 'T-shirt') {
+        dispatch({ type: 'SET_TYPE', payload: { type: null, color: null } });
+        setStep(3);
+      } else {
+        dispatch({ type: 'SET_COLOR', payload: null });
+        setStep(3);
+      }
     } else if (step === 5) {
-      dispatch({ type: 'SET_QUANTITY', payload: 10 });
-      setStep(4);
+      // Quantity (Jersey) or Customization (T-shirt) → Color (Jersey) or Quantity (T-shirt)
+      if (order.category === 'Jersey') {
+        setStep(4);
+      } else {
+        setStep(4);
+      }
     } else if (step === 6) {
+      // Customization (Jersey) → Quantity
       dispatch({ type: 'SET_TEXT', payload: '' });
       dispatch({ type: 'SET_DESIGN', payload: null });
       dispatch({ type: 'SET_COLORS_USED', payload: 0 });
@@ -241,7 +496,7 @@ function Order() {
   };
 
   const handlePreConfirm = () => {
-    setShowPreConfirm(true); // Show pre-submission popup
+    setShowPreConfirm(true);
   };
 
   const onSubmit = async () => {
@@ -275,7 +530,14 @@ function Order() {
         </h1>
         {/* Progress Bar */}
         <div className="flex justify-center mb-8 flex-wrap gap-2">
-          {['Category', 'Subcategory', 'Type', 'Color', 'Quantity', 'Customization'].map((label, index) => (
+          {[
+            'Category',
+            'Subcategory',
+            'Type',
+            ...(order.category === 'Jersey' ? ['Color'] : []),
+            'Quantity',
+            'Customization',
+          ].map((label, index) => (
             <div key={index} className="flex items-center">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
@@ -295,7 +557,8 @@ function Order() {
               >
                 {label}
               </span>
-              {index < 5 && (
+              {index <
+                (order.category === 'Jersey' ? 5 : 4) && (
                 <div
                   className={`w-12 h-1 mx-2 ${
                     step > index + 1 ? 'bg-soft-teal' : 'bg-light-gray'
@@ -362,7 +625,7 @@ function Order() {
                     >
                       <h4 className="text-lg font-semibold text-deep-charcoal">Angshuk A+</h4>
                       <p className="text-gray-600 mt-2">
-                        Premium branded T-shirts from top brands.
+                        Premium T-shirts with top-tier style and comfort.
                       </p>
                     </div>
                     <div
@@ -371,9 +634,51 @@ function Order() {
                     >
                       <h4 className="text-lg font-semibold text-deep-charcoal">Angshuk A</h4>
                       <p className="text-gray-600 mt-2">
-                        Affordable non-branded T-shirts for everyday use.
+                        Affordable T-shirts for everyday use.
                       </p>
                     </div>
+                  </div>
+                  <button
+                    onClick={prevStep}
+                    disabled={step === 1}
+                    className={`mt-4 text-soft-teal hover:underline ${
+                      step === 1 ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    Back
+                  </button>
+                </motion.div>
+              )}
+              {step === 3 && order.category === 'T-shirt' && order.subcategory === 'Angshuk A+' && (
+                <motion.div
+                  key="step3-a-plus"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
+                    Choose Your Premium T-shirt
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {tshirtOptions['Angshuk A+'].map((tshirt) => (
+                      <div
+                        key={tshirt.name}
+                        onClick={() => handleTypeSelect({ type: tshirt.name, color: tshirt.color })}
+                        className="bg-off-white p-4 rounded-lg shadow hover:shadow-lg cursor-pointer transition-transform hover:scale-105"
+                      >
+                        <LazyLoadImage
+                          src={tshirt.image}
+                          alt={tshirt.name}
+                          effect="blur"
+                          className="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <p className="font-medium text-deep-charcoal text-center">{tshirt.name}</p>
+                        <p className="text-sm text-gray-600 text-center">
+                          ৳{tshirt.pricing[tshirt.pricing.length - 1].price} - ৳{tshirt.pricing[0].price}
+                        </p>
+                        <p className="text-sm text-gray-600 text-center">{tshirt.desc}</p>
+                      </div>
+                    ))}
                   </div>
                   <button
                     onClick={prevStep}
@@ -383,40 +688,37 @@ function Order() {
                   </button>
                 </motion.div>
               )}
-              {step === 3 && order.category === 'T-shirt' && (
+              {step === 3 && order.category === 'T-shirt' && order.subcategory === 'Angshuk A' && (
                 <motion.div
-                  key="step3-tshirt"
+                  key="step3-a"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
                   <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
-                    Choose {order.subcategory} T-shirt
+                    Choose Your T-shirt
                   </h3>
-                  {tshirtOptions[order.subcategory].map((tshirt) => (
-                    <div
-                      key={tshirt.name}
-                      onClick={() => handleTypeSelect(tshirt.name)}
-                      className="flex items-center p-4 border rounded-lg mb-4 cursor-pointer hover:bg-light-gray transition"
-                    >
-                      <input
-                        type="radio"
-                        name="tshirt-type"
-                        checked={order.type === tshirt.name}
-                        onChange={() => handleTypeSelect(tshirt.name)}
-                        className="mr-4"
-                      />
-                      <div>
-                        <p className="font-medium text-deep-charcoal">{tshirt.name}</p>
-                        <p className="text-sm text-gray-600">
-                          {order.subcategory === 'Angshuk A+'
-                            ? `Price varies by quantity (৳${tshirt.pricing[tshirt.pricing.length - 1].price}-${tshirt.pricing[0].price})`
-                            : `৳${tshirt.price} per unit`}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {tshirtOptions['Angshuk A'].map((tshirt) => (
+                      <div
+                        key={tshirt.name}
+                        onClick={() => handleTypeSelect({ type: tshirt.name, color: tshirt.color })}
+                        className="bg-off-white p-4 rounded-lg shadow hover:shadow-lg cursor-pointer transition-transform hover:scale-105"
+                      >
+                        <LazyLoadImage
+                          src={tshirt.image}
+                          alt={tshirt.name}
+                          effect="blur"
+                          className="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <p className="font-medium text-deep-charcoal text-center">{tshirt.name}</p>
+                        <p className="text-sm text-gray-600 text-center">
+                          ৳{tshirt.pricing[tshirt.pricing.length - 1].price} - ৳{tshirt.pricing[0].price}
                         </p>
-                        <p className="text-sm text-gray-600">{tshirt.desc}</p>
+                        <p className="text-sm text-gray-600 text-center">{tshirt.desc}</p>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                   <button
                     onClick={prevStep}
                     className="mt-4 text-soft-teal hover:underline"
@@ -486,14 +788,14 @@ function Order() {
                     ].map((fabric) => (
                       <div
                         key={fabric.name}
-                        onClick={() => handleTypeSelect(fabric.name)}
+                        onClick={() => handleTypeSelect({ type: fabric.name })}
                         className="flex items-start p-4 border rounded-lg cursor-pointer hover:bg-light-gray transition"
                       >
                         <input
                           type="radio"
                           name="jersey-fabric"
                           checked={order.type === fabric.name}
-                          onChange={() => handleTypeSelect(fabric.name)}
+                          onChange={() => handleTypeSelect({ type: fabric.name })}
                           className="mt-1 mr-4"
                         />
                         <div>
@@ -516,9 +818,9 @@ function Order() {
                   </button>
                 </motion.div>
               )}
-              {step === 4 && (
+              {step === 4 && order.category === 'Jersey' && (
                 <motion.div
-                  key="step4"
+                  key="step4-jersey"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -546,9 +848,9 @@ function Order() {
                   </button>
                 </motion.div>
               )}
-              {step === 5 && (
+              {step === (order.category === 'Jersey' ? 5 : 4) && (
                 <motion.div
-                  key="step5"
+                  key="step-quantity"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -580,10 +882,8 @@ function Order() {
                   )}
                   <p className="text-sm text-gray-600 mt-2">
                     Minimum order: 10 units. Max: 1000.
-                    {order.category === 'T-shirt' && order.subcategory === 'Angshuk A+' ? (
+                    {order.category === 'T-shirt' && (
                       <> Current price per unit: ৳{currentPricePerUnit}</>
-                    ) : (
-                      ''
                     )}
                   </p>
                   <button
@@ -593,16 +893,16 @@ function Order() {
                     Back
                   </button>
                   <button
-                    onClick={() => setStep(6)}
+                    onClick={() => setStep(order.category === 'Jersey' ? 6 : 5)}
                     className="mt-4 bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition"
                   >
                     Next
                   </button>
                 </motion.div>
               )}
-              {step === 6 && (
+              {step === (order.category === 'Jersey' ? 6 : 5) && (
                 <motion.div
-                  key="step6"
+                  key="step-customization"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -626,21 +926,21 @@ function Order() {
                               dispatch({ type: 'SET_TEXT', payload: e.target.value });
                             }}
                             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-soft-teal"
-                            placeholder="Enter text (e.g., Team Name, max 50 chars)"
+                            placeholder="e.g., Team Name"
                           />
                         )}
                       />
-                      <p className="text-sm text-gray-600 mt-1">
-                        {order.text.length}/50 characters
-                      </p>
                       {errors.text && (
                         <p className="text-red-500 text-sm mt-1">
-                          Text must be 50 characters or less
+                          Maximum 50 characters
                         </p>
                       )}
+                      <p className="text-sm text-gray-600 mt-2">
+                        Add text like team names or slogans (৳20 per unit).
+                      </p>
                     </div>
                     <div className="mb-4">
-                      <label className="block text-deep-charcoal mb-2">Upload Your Own Design</label>
+                      <label className="block text-deep-charcoal mb-2">Design Upload</label>
                       <Controller
                         name="design"
                         control={control}
@@ -650,262 +950,250 @@ function Order() {
                             accept="image/*"
                             onChange={(e) => {
                               const file = e.target.files[0];
-                              if (file) {
-                                const url = URL.createObjectURL(file);
-                                field.onChange(file);
-                                dispatch({ type: 'SET_DESIGN', payload: url });
-                              }
+                              field.onChange(file);
+                              dispatch({ type: 'SET_DESIGN', payload: file });
                             }}
                             className="w-full p-2 border rounded-lg"
                           />
                         )}
                       />
-                      {order.design && (
-                        <img
-                          src={order.design}
-                          alt="Uploaded Design"
-                          className="mt-4 h-20 rounded"
-                        />
-                      )}
+                      <p className="text-sm text-gray-600 mt-2">
+                        Upload your logo or design (৳50 per unit).
+                      </p>
                     </div>
                     <div className="mb-4">
-                      <label className="block text-deep-charcoal mb-2">Number of Colors Used</label>
+                      <label className="block text-deep-charcoal mb-2">Colors Used in Design</label>
                       <Controller
                         name="colorsUsed"
                         control={control}
+                        rules={{ min: 0, max: 5 }}
                         render={({ field }) => (
-                          <select
+                          <input
+                            type="number"
                             {...field}
                             onChange={(e) => {
-                              const value = parseInt(e.target.value);
+                              const value = parseInt(e.target.value) || 0;
                               field.onChange(value);
                               dispatch({ type: 'SET_COLORS_USED', payload: value });
                             }}
                             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-soft-teal"
-                          >
-                            <option value="0">0 Colors</option>
-                            <option value="1">1 Color (৳10 per unit)</option>
-                            <option value="2">2 Colors (৳20 per unit)</option>
-                            <option value="3">3 Colors (₳30 per unit)</option>
-                          </select>
+                          />
                         )}
                       />
-                      <p className="text-sm text-gray-600 mt-1">
-                        Additional cost: ৳10 per color per unit
+                      {errors.colorsUsed && (
+                        <p className="text-red-500 text-sm mt-1">
+                          Maximum 5 colors
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-600 mt-2">
+                        Number of colors in your design (৳10 per color per unit).
                       </p>
                     </div>
-                    <button
-                      onClick={prevStep}
-                      className="mt-4 text-soft-teal hover:underline mr-4"
-                      type="button"
-                    >
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="mt-4 bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition disabled:opacity-50"
-                    >
-                      Review Order
-                    </button>
+                    <div className="flex justify-between">
+                      <button
+                        type="button"
+                        onClick={prevStep}
+                        className="text-soft-teal hover:underline"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition"
+                      >
+                        Review Order
+                      </button>
+                    </div>
                   </form>
                 </motion.div>
               )}
             </AnimatePresence>
           </motion.div>
-          {/* Preview & Price */}
-          <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow sticky top-24">
-              <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
-                Order Preview
-              </h3>
-              <div className="relative h-48 bg-light-gray rounded flex items-center justify-center mb-4">
-                {order.category ? (
-                  <>
-                    <img
-                      src={order.category === 'T-shirt' ? TshirtSvg : JerseySvg}
-                      alt={order.category}
-                      className="h-32"
-                      style={{
-                        filter:
-                          order.color && order.color !== 'White'
-                            ? `hue-rotate(${
-                                order.color === 'Blue'
-                                  ? '220deg'
-                                  : order.color === 'Red'
-                                  ? '0deg'
-                                  : '0deg'
-                              })`
-                            : 'none',
-                      }}
-                    />
-                    {order.text && (
-                      <span className="absolute text-sm text-deep-charcoal font-semibold">
-                        {order.text}
-                      </span>
-                    )}
-                    {order.design && (
-                      <img
-                        src={order.design}
-                        alt="Design"
-                        className="absolute h-12 bottom-4 right-4"
-                      />
-                    )}
-                  </>
-                ) : (
-                  'Select options to preview'
-                )}
-              </div>
-              <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
-                Price Estimate
-              </h3>
-              <div className="text-gray-600">
-                <p>Base Price: ৳{price.base}</p>
-                <p>Text: ৳{price.text}</p>
-                <p>Design: ৳{price.design}</p>
-                <p>Colors: ৳{price.colors}</p>
-                <p>Setup Fee: ৳{price.setupFee}</p>
-                <p>Discount: -৳{price.discount}</p>
-                <p className="text-coral font-bold mt-2">
-                  Total: ৳{price.total}
-                </p>
-              </div>
+          {/* Preview */}
+          <motion.div
+            className="bg-white p-6 rounded-lg shadow"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3 className="text-xl font-semibold text-deep-charcoal mb-4">Order Preview</h3>
+            <div className="mb-4">
+              {order.category === 'T-shirt' && order.subcategory && order.type ? (
+                <LazyLoadImage
+                  src={tshirtOptions[order.subcategory].find((t) => t.name === order.type)?.image}
+                  alt={order.type}
+                  effect="blur"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+              ) : order.category === 'Jersey' ? (
+                <img
+                  src={JerseySvg}
+                  alt="Jersey Preview"
+                  className="w-full h-48 object-contain"
+                />
+              ) : (
+                <div className="w-full h-48 bg-light-gray rounded-lg flex items-center justify-center">
+                  <p className="text-gray-600">Select an item to preview</p>
+                </div>
+              )}
             </div>
-          </div>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Category:</span> {order.category || 'N/A'}
+            </p>
+            {order.category === 'T-shirt' && (
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Subcategory:</span> {order.subcategory || 'N/A'}
+              </p>
+            )}
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Type:</span> {order.type || 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Color:</span> {order.color || 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Quantity:</span> {order.quantity}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Text:</span> {order.text || 'None'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Design:</span> {order.design ? 'Uploaded' : 'None'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Colors Used:</span> {order.colorsUsed || 0}
+            </p>
+            <hr className="my-4" />
+            <h4 className="text-lg font-semibold text-deep-charcoal mb-2">Price Breakdown</h4>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Base Price:</span> ৳{price.base}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Text:</span> ৳{price.text}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Design:</span> ৳{price.design}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Colors:</span> ৳{price.colors}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Setup Fee:</span> ৳{price.setupFee}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-medium">Discount:</span> -৳{price.discount}
+            </p>
+            <p className="text-lg font-semibold text-deep-charcoal mt-2">
+              Total: ৳{price.total}
+            </p>
+          </motion.div>
         </div>
       </div>
-      {/* Pre-submission Confirmation Modal */}
+      {/* Pre-Confirmation Modal */}
       {showPreConfirm && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-off-white p-8 rounded-lg shadow-lg max-w-md w-full"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.8 }}
+            className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
+            initial={{ scale: 0.8, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.8, y: 20 }}
           >
-            <h2 className="text-2xl font-bold text-deep-charcoal mb-4">
-              Review Your Order
-            </h2>
+            <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
+              Confirm Your Order
+            </h3>
             <p className="text-gray-600 mb-4">
-              Please confirm the details before submitting:
+              Please review your order details before submitting.
             </p>
-            <p className="text-gray-600">
-              <strong>Category:</strong> {order.category}
-            </p>
-            <p className="text-gray-600">
-              <strong>Subcategory:</strong> {order.subcategory || 'N/A'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Type/Fabric:</strong> {order.type}
-            </p>
-            <p className="text-gray-600">
-              <strong>Color:</strong> {order.color}
-            </p>
-            <p className="text-gray-600">
-              <strong>Quantity:</strong> {order.quantity}
-            </p>
-            <p className="text-gray-600">
-              <strong>Text:</strong> {order.text || 'None'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Design:</strong> {order.design ? 'Included' : 'None'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Colors Used:</strong> {order.colorsUsed}
-            </p>
-            <div className="text-gray-600 mt-4">
-              <p><strong>Price Estimate:</strong></p>
-              <p>Base Price: ৳{price.base}</p>
-              <p>Text: ৳{price.text}</p>
-              <p>Design: ৳{price.design}</p>
-              <p>Colors: ৳{price.colors}</p>
-              <p>Setup Fee: ৳{price.setupFee}</p>
-              <p>Discount: -৳{price.discount}</p>
-              <p className="text-coral font-bold">
+            <div className="mb-4">
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Category:</span> {order.category}
+              </p>
+              {order.category === 'T-shirt' && (
+                <p className="text-sm text-gray-600">
+                  <span className="font-medium">Subcategory:</span> {order.subcategory}
+                </p>
+              )}
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Type:</span> {order.type}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Color:</span> {order.color}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Quantity:</span> {order.quantity}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Text:</span> {order.text || 'None'}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Design:</span> {order.design ? 'Uploaded' : 'None'}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Colors Used:</span> {order.colorsUsed || 0}
+              </p>
+              <p className="text-lg font-semibold text-deep-charcoal mt-2">
                 Total: ৳{price.total}
               </p>
             </div>
-            <div className="flex justify-between mt-6">
+            <div className="flex justify-end space-x-4">
               <button
                 onClick={() => setShowPreConfirm(false)}
-                className="bg-gray-300 text-deep-charcoal px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+                className="text-gray-600 hover:underline"
               >
-                Edit Order
+                Cancel
               </button>
               <button
                 onClick={onSubmit}
                 disabled={isSubmitting}
-                className="bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition disabled:opacity-50"
+                className={`bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                {isSubmitting ? 'Submitting...' : 'Confirm Order'}
+                {isSubmitting ? 'Submitting...' : 'Confirm'}
               </button>
             </div>
           </motion.div>
         </motion.div>
       )}
-      {/* Final Confirmation Modal */}
+      {/* Confirmation Modal */}
       {showConfirmation && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-off-white p-8 rounded-lg shadow-lg max-w-md w-full"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.8 }}
+            className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
+            initial={{ scale: 0.8, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.8, y: 20 }}
           >
-            <h2 className="text-2xl font-bold text-deep-charcoal mb-4">
-              Order Confirmed
-            </h2>
+            <h3 className="text-xl font-semibold text-deep-charcoal mb-4">
+              Order Submitted!
+            </h3>
             <p className="text-gray-600 mb-4">
-              Thank you for your order! Here’s a summary:
+              Thank you for your order. We'll contact you soon with confirmation details.
             </p>
-            <p className="text-gray-600">
-              <strong>Category:</strong> {order.category}
-            </p>
-            <p className="text-gray-600">
-              <strong>Subcategory:</strong> {order.subcategory || 'N/A'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Type/Fabric:</strong> {order.type}
-            </p>
-            <p className="text-gray-600">
-              <strong>Color:</strong> {order.color}
-            </p>
-            <p className="text-gray-600">
-              <strong>Quantity:</strong> {order.quantity}
-            </p>
-            <p className="text-gray-600">
-              <strong>Text:</strong> {order.text || 'None'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Design:</strong> {order.design ? 'Included' : 'None'}
-            </p>
-            <p className="text-gray-600">
-              <strong>Colors Used:</strong> {order.colorsUsed}
-            </p>
-            <p className="text-coral font-bold mt-4">
-              Total: ৳{price.total}
-            </p>
-            <button
-              onClick={() => {
-                setShowConfirmation(false);
-                setStep(1);
-                dispatch({ type: 'RESET' });
-                reset();
-              }}
-              className="mt-6 bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition w-full"
-            >
-              Start New Order
-            </button>
+            <div className="flex justify-end">
+              <Link
+                to="/"
+                className="bg-soft-teal text-off-white px-4 py-2 rounded-lg hover:bg-teal-600 transition"
+                onClick={() => {
+                  dispatch({ type: 'RESET' });
+                  reset();
+                  setStep(1);
+                  setShowConfirmation(false);
+                }}
+              >
+                Back to Home
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
       )}

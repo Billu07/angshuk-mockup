@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Footer from './components/footer'; // Added
+import Footer from './components/Footer';
+import ChatWidget from './components/ChatWidget'; // New
+import WhatsAppButton from './components/WhatsAppButton'; // New
 import Home from './pages/home';
 import Order from './pages/order';
 import About from './pages/about';
@@ -22,7 +24,9 @@ function App() {
             <Route path="/fabrics" element={<Fabrics />} />
           </Routes>
         </main>
-        <Footer /> {/* Added */}
+        <Footer />
+        <ChatWidget /> {/* Added for live chat */}
+        <WhatsAppButton /> {/* Added for WhatsApp */}
       </div>
     </Router>
   );
