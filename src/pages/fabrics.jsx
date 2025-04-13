@@ -19,7 +19,7 @@ import chinigura1 from '/src/assets/Fabrics/chinigura/image1.jpg';
 import chinigura2 from '/src/assets/Fabrics/chinigura/image2.jpg';
 import chinigura3 from '/src/assets/Fabrics/chinigura/image3.jpg';
 import honeycomb1 from '/src/assets/Fabrics/honeycomb/image1.jpg';
-import honeycomb2 from '/src/assets/fabrics/honeycomb/image2.jpg';
+import honeycomb2 from '/src/assets/Fabrics/honeycomb/image2.jpg';
 import honeycomb3 from '/src/assets/Fabrics/honeycomb/image3.jpg';
 import pp1 from '/src/assets/Fabrics/pp/image1.jpg';
 import pp2 from '/src/assets/Fabrics/pp/image2.jpg';
